@@ -102,10 +102,15 @@
       color: rgba(255,255,255,0.6);
     }
 
-    .hero-logo {
-      width: clamp(60px, 8vw, 110px);
-      height: auto;
-      display: block;
+    .hero-logo-text {
+      font-family: var(--display-font);
+      font-size: clamp(48px, 8vw, 100px);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      text-align: center;
     }
 
     .hero-sub {
@@ -575,7 +580,7 @@
       .hero-image-container { height: 75vh; border-radius: 12px 12px 0 0; }
       .hero-content { gap: 12px; padding: 32px 20px; }
       .hero-label { font-size: 11px; letter-spacing: 0.12em; }
-      .hero-logo { width: clamp(200px, 70vw, 320px); }
+      .hero-logo-text { font-size: clamp(40px, 10vw, 72px); }
       .hero-sub { font-size: 15px; }
       .hero-cta { font-size: 15px; padding: 13px 36px; }
 
@@ -636,7 +641,7 @@
           <img src="project/uploads/Screenshot 2026-05-02 at 10.51.33 AM.png" alt="Akatos Arena stadium" />
           <div class="hero-content">
             <p class="hero-label">Builders Club · May 11–23, 2026</p>
-            <img src="project/uploads/AkatosArena.png" alt="Akatos Arena" class="hero-logo" />
+            <div class="hero-logo-text">Akatos Arena</div>
             <p class="hero-sub">2 Week Builder Bootcamp</p>
             <a href="https://forms.gle/npCidhMsouzYkc529" target="_blank" class="hero-cta">Apply</a>
           </div>

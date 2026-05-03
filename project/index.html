@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akatos Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #fafaf8;
+      --dark: #0f0f0d;
+      --dark2: #161614;
+      --accent: oklch(68% 0.18 48);   /* warm amber */
+      --accent2: oklch(68% 0.18 168); /* teal complement */
+      --body-font: 'DM Sans', sans-serif;
+      --display-font: 'Oswald', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--dark);
+      font-family: var(--body-font);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero-wrapper {
+      padding: 32px 32px 0;
+      position: relative;
+      background: var(--white);
+    }
+
+    .hero-image-container {
+      position: relative;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      width: 100%;
+      height: min(90vh, 820px);
+    }
+
+    .hero-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+
+    /* dark overlay on top of image */
+    .hero-image-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25) 0%,
+        rgba(0,0,0,0.15) 40%,
+        rgba(12,12,10,0.75) 80%,
+        rgba(12,12,10,0.97) 100%
+      );
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px 24px;
+      gap: 20px;
+    }
+
+    .hero-label {
+      font-family: var(--body-font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .hero-logo {
+      width: clamp(280px, 45vw, 640px);
+      height: auto;
+      display: block;
+    }
+
+    .hero-sub {
+      font-family: var(--display-font);
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-top: -4px;
+    }
+
+    .hero-cta {
+      margin-top: 16px;
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--display-font);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 52px;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .hero-cta:hover {
+      background: oklch(72% 0.20 48);
+      transform: translateY(-2px);
+    }
+
+    /* ─── HERO+DARK WRAPPER ─────────────────────────────────── */
+    /* Both hero and dark section live inside one dark-bg wrapper.
+       The image floats on white padding at top; beneath it the dark
+       background continues seamlessly into the What is Akatos card. */
+    .hero-dark-wrapper {
+      background: var(--white);
+      padding-bottom: 32px;
+    }
+
+    .hero-dark-inner {
+      background: var(--dark);
+      border-radius: 20px;
+      margin: 32px 32px 0;
+      overflow: hidden;
+    }
+
+    /* hero image fills the dark card edge-to-edge — no padding on sides */
+    .hero-wrapper {
+      padding: 0;
+      position: relative;
+      background: transparent;
+    }
+
+    /* ─── DARK SECTION ──────────────────────────────────────── */
+    .dark-section-outer {
+      background: transparent;
+      padding: 0 24px 40px;
+    }
+
+    .dark-section {
+      background: transparent;
+      border-radius: 0;
+      padding: 64px 40px 72px;
+      color: var(--white);
+    }
+
+    .section-eyebrow {
+      font-family: var(--body-font);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .what-is-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .what-is-text h2 {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.0;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .what-is-text p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(250,250,248,0.65);
+      font-weight: 300;
+      max-width: 460px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      align-self: start;
+    }
+
+    .stat-cell {
+      padding: 32px 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-cell:first-child { border-radius: 12px 0 0 0; }
+    .stat-cell:nth-child(2) { border-radius: 0 12px 0 0; }
+    .stat-cell:nth-last-child(2) { border-radius: 0 0 0 12px; }
+    .stat-cell:last-child { border-radius: 0 0 12px 0; }
+
+    .stat-value {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .stat-value span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(250,250,248,0.45);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ─── SCHEDULE SECTION ──────────────────────────────────── */
+    .schedule-section {
+      background: var(--white);
+      padding: 112px 64px 112px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .schedule-inner {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .schedule-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      gap: 32px;
+    }
+
+    .schedule-header h2 {
+      font-family: var(--display-font);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 0.95;
+      color: var(--dark);
+    }
+
+    .schedule-header p {
+      font-size: 15px;
+      color: rgba(15,15,13,0.5);
+      max-width: 320px;
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid rgba(15,15,13,0.1);
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 48px 140px 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(15,15,13,0.1);
+      transition: background 0.15s;
+      border-radius: 4px;
+    }
+
+    .schedule-row:hover {
+      background: rgba(15,15,13,0.025);
+    }
+
+    .schedule-num {
+      font-family: var(--display-font);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(15,15,13,0.25);
+      letter-spacing: 0.08em;
+    }
+
+    .schedule-date {
+      font-family: var(--display-font);
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(15,15,13,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .schedule-topic {
+      font-family: var(--display-font);
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+
+    .schedule-row.demo-day .schedule-topic {
+      color: var(--accent);
+    }
+
+    .schedule-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 3px;
+      background: var(--dark);
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    .schedule-row.demo-day .schedule-badge {
+      background: var(--accent);
+    }
+
+    /* ─── WHO IS IT FOR ─────────────────────────────────────── */
+    .who-section-outer {
+      background: var(--white);
+      padding: 0 32px 32px;
+    }
+
+    .who-section {
+      background: var(--dark2);
+      border-radius: 20px;
+      padding: 80px 64px;
+      color: var(--white);
+    }
+
+    .who-section .section-eyebrow {
+      margin-bottom: 40px;
+    }
+
+    .who-section h2 {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.0;
+      margin-bottom: 56px;
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .who-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 40px 36px;
+      border-radius: 12px;
+    }
+
+    .who-card h3 {
+      font-family: var(--display-font);
+      font-size: 22px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      margin-bottom: 16px;
+      min-height: 2.6em;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .who-card p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(250,250,248,0.6);
+      font-weight: 300;
+    }
+
+    /* ─── WHAT YOU GET (light orange bg) ─────────────────────── */
+    .what-you-get-section {
+      background: var(--white);
+      padding: 112px 64px 112px;
+    }
+
+    .what-you-get-section .section-eyebrow {
+      margin-bottom: 16px;
+    }
+
+    .wyg-title {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.0;
+      color: var(--dark);
+      margin-bottom: 52px;
+    }
+
+    .perks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .perk-item {
+      padding: 40px 36px;
+      border-radius: 12px;
+    }
+
+    .perk-light {
+      background: rgba(255, 210, 160, 0.25);
+      border: 1px solid rgba(220, 150, 60, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .perk-title {
+      font-family: var(--display-font);
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .perk-title-dark {
+      color: var(--dark);
+    }
+
+    .perk-desc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(250,250,248,0.45);
+      font-weight: 300;
+    }
+
+    .perk-desc-dark {
+      color: rgba(15,15,13,0.5);
+    }
+
+    /* ─── PHOTO CAROUSEL ─────────────────────────────────────── */
+    .carousel-section {
+      background: var(--white);
+      padding: 80px 0 48px;
+      position: relative;
+    }
+
+    /* horizontal fade mask — hides card edges left/right without clipping shadows */
+    .carousel-section::before,
+    .carousel-section::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .carousel-section::before {
+      left: 0;
+      background: linear-gradient(to right, var(--white), transparent);
+    }
+    .carousel-section::after {
+      right: 0;
+      background: linear-gradient(to left, var(--white), transparent);
+    }
+
+    .carousel-track-wrapper {
+      width: 100%;
+      padding: 40px 0 44px;
+      overflow: visible;
+    }
+
+    .carousel-track {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .carousel-img-wrap {
+      flex-shrink: 0;
+      width: 340px;
+      height: 240px;
+      border-radius: 15px;
+      outline: 5px solid #fff;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.08);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      overflow: hidden;
+    }
+
+    .carousel-img-wrap:hover {
+      box-shadow: 0 16px 40px rgba(0,0,0,0.22), 0 4px 10px rgba(0,0,0,0.10);
+      transform: translateY(-4px);
+    }
+
+    /* stagger: alternate up/down */
+    .carousel-img-wrap:nth-child(odd)  { margin-top: -16px; }
+    .carousel-img-wrap:nth-child(even) { margin-top: 16px; }
+
+    .carousel-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ─── FINAL CTA ─────────────────────────────────────────── */
+    .final-cta {
+      background: var(--white);
+      padding: 48px 64px 120px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .final-cta h2 {
+      font-family: var(--display-font);
+      font-size: clamp(48px, 7vw, 96px);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 0.92;
+      color: var(--dark);
+    }
+
+    .final-cta p {
+      font-size: 16px;
+      color: rgba(15,15,13,0.5);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    .final-cta .hero-cta {
+      margin-top: 8px;
+    }
+
+    .deposit-note {
+      font-size: 13px;
+      color: rgba(15,15,13,0.35);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      padding: 40px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--display-font);
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(250,250,248,0.3);
+    }
+
+    .footer-info {
+      font-size: 13px;
+      color: rgba(250,250,248,0.25);
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    /* ─── SCHEDULE DETAIL TABLE ──────────────────────────────── */
+    .schedule-detail {
+      margin-top: 0;
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .schedule-detail-inner {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(15,15,13,0.08);
+    }
+
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .detail-table tr {
+      border-bottom: 1px solid rgba(15,15,13,0.07);
+    }
+
+    .detail-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .dt-label {
+      font-family: var(--display-font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(15,15,13,0.35);
+      padding: 18px 0;
+      width: 200px;
+      vertical-align: top;
+    }
+
+    .dt-value {
+      font-family: var(--body-font);
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(15,15,13,0.75);
+      padding: 18px 0 18px 32px;
+      line-height: 1.6;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .hero-dark-inner { margin: 20px 20px 0; }
+      .dark-section { padding: 56px 40px 64px; }
+      .what-is-grid { grid-template-columns: 1fr; gap: 40px; }
+      .what-is-text p { max-width: 100%; }
+      .who-section { padding: 56px 40px; }
+      .who-section h2 { margin-bottom: 32px; }
+      .what-you-get-section { padding: 80px 40px; }
+      .schedule-section { padding: 80px 40px 96px; }
+      .schedule-row { grid-template-columns: 40px 130px 1fr; gap: 20px; }
+      .final-cta { padding: 48px 40px 100px; }
+      footer { padding: 32px 40px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      /* Hero */
+      .hero-dark-inner { margin: 12px 12px 0; border-radius: 16px; }
+      .hero-image-container { height: 75vh; border-radius: 12px 12px 0 0; }
+      .hero-content { gap: 12px; padding: 32px 20px; }
+      .hero-label { font-size: 11px; letter-spacing: 0.12em; }
+      .hero-logo { width: clamp(200px, 70vw, 320px); }
+      .hero-sub { font-size: 15px; }
+      .hero-cta { font-size: 15px; padding: 13px 36px; }
+
+      /* Dark / What is Akatos */
+      .dark-section-outer { padding: 0 12px 12px; }
+      .dark-section { padding: 40px 24px 52px; }
+      .what-is-grid { grid-template-columns: 1fr; gap: 32px; }
+      .what-is-text p { max-width: 100%; font-size: 15px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat-cell { padding: 22px 18px; }
+
+      /* Schedule */
+      .schedule-section { padding: 56px 20px 72px; display: block; }
+      .schedule-inner { max-width: 100%; }
+      .schedule-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 32px; }
+      .schedule-header p { text-align: left; font-size: 13px; }
+      .schedule-row { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px 0; }
+      .schedule-date { display: none; }
+      .schedule-topic { font-size: 17px; }
+      .schedule-num { font-size: 11px; }
+
+      /* Who is it for */
+      .who-section-outer { padding: 0 12px 12px; }
+      .who-section { padding: 40px 24px 48px; border-radius: 16px; }
+      .who-section h2 { font-size: 32px; margin-bottom: 28px; }
+      .who-grid { grid-template-columns: 1fr; gap: 12px; }
+      .who-card { border-radius: 12px; padding: 28px 24px; }
+      .who-card h3 { font-size: 18px; min-height: unset; }
+
+      /* What you get */
+      .what-you-get-section { padding: 56px 20px 64px; }
+      .wyg-title { font-size: 32px; margin-bottom: 32px; }
+      .perks-grid { grid-template-columns: 1fr; gap: 12px; }
+      .perk-item { border-radius: 12px !important; padding: 28px 24px; }
+
+      /* Carousel */
+      .carousel-section { padding: 40px 0 32px; }
+      .carousel-img-wrap { width: 240px; height: 170px; outline-width: 3px; }
+
+      /* Final CTA */
+      .final-cta { padding: 40px 24px 80px; gap: 16px; }
+      .deposit-note { font-size: 12px; text-align: center; }
+
+      /* Footer */
+      footer { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 8px; }
+      .footer-info { text-align: left; }
+    }
+
+    @media (max-width: 420px) {
+      .hero-image-container { height: 65vh; }
+      .dark-section { padding: 32px 18px 44px; }
+      .who-section { padding: 32px 18px 40px; }
+      .carousel-img-wrap { width: 200px; height: 142px; }
+      .schedule-topic { font-size: 15px; }
+    }
+
+    /* Scroll fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HERO + WHAT IS AKATOS (seamless dark card) ─────── -->
+  <div class="hero-dark-wrapper">
+    <div class="hero-dark-inner">
+
+      <!-- Hero image -->
+      <section class="hero-wrapper" style="padding: 0px 0px 0px 1px">
+        <div class="hero-image-container">
+          <img src="uploads/Screenshot 2026-05-02 at 10.51.33 AM.png" alt="Akatos Arena" />
+          <div class="hero-content">
+            <p class="hero-label">Builders Club · May 11–23, 2026</p>
+            <img src="uploads/AkatosArena.png" alt="Akatos Arena" class="hero-logo" style="width: 383px; height: 192.398px" />
+            <p class="hero-sub">2 Week Builder Bootcamp</p>
+            <a href="https://forms.gle/npCidhMsouzYkc529" target="_blank" class="hero-cta" style="border-radius: 15px">Apply</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── WHAT IS AKATOS ──────────────────────────────── -->
+      <section class="dark-section-outer">
+    <div class="dark-section">
+      <div class="section-eyebrow">What is Akatos Arena</div>
+      <div class="what-is-grid fade-in">
+        <div class="what-is-text">
+          <h2>Build Something<br>Real in Two Weeks</h2>
+          <p style="color: rgb(255, 255, 255)">A two-week builder sprint for people who want to move faster and make something real. Six working sessions, open weekends for co-working, and a Demo Day on May 23. Ends the day before Toronto Tech Week.
+
+
+Most talented people don't lack ideas - they lack urgency.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <div class="stat-value">50-100</div>
+            <div class="stat-label">Builders</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-value">6</div>
+            <div class="stat-label">EVENING SESSIONS</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Weeks</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-value">$<span>100</span></div>
+            <div class="stat-label">Refundable Deposit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /dark-section -->
+  </section><!-- /dark-section-outer -->
+  </div><!-- /hero-dark-inner -->
+  </div><!-- /hero-dark-wrapper -->
+
+  <!-- ─── SCHEDULE ──────────────────────────────────────── -->
+  <section class="schedule-section">
+    <div class="schedule-inner">
+    <div class="schedule-header fade-in">
+      <h2>The<br>Schedule</h2>
+      <p>Monday, Wednesday, Friday evenings
+— each roughly 2.5 hours.</p>
+    </div>
+    <div class="schedule-list">
+      <div class="schedule-row">
+        <span class="schedule-num">01</span>
+        <span class="schedule-date">Mon May 11</span>
+        <span class="schedule-topic">Finding Problems Worth Solving</span>
+
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-num">02</span>
+        <span class="schedule-date">Wed May 13</span>
+        <span class="schedule-topic">Shipping Fast</span>
+
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-num">03</span>
+        <span class="schedule-date">Fri May 15</span>
+        <span class="schedule-topic">Cold Outreach That Gets Replies</span>
+
+      </div>
+      <div class="schedule-row" style="opacity:0.45;">
+        <span class="schedule-num"></span>
+        <span class="schedule-date">SAT–SUN</span>
+        <span class="schedule-topic">Open Co-Working</span>
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-num">04</span>
+        <span class="schedule-date">Mon May 18</span>
+        <span class="schedule-topic">Pricing</span>
+
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-num">05</span>
+        <span class="schedule-date">Wed May 20</span>
+        <span class="schedule-topic">Getting Unstuck</span>
+
+      </div>
+      <div class="schedule-row demo-day">
+        <span class="schedule-num">06</span>
+        <span class="schedule-date">Sat May 23</span>
+        <span class="schedule-topic">Demo Day</span>
+
+      </div>
+    </div>
+    </div><!-- /schedule-inner -->
+
+  </section>
+  <section class="who-section-outer">
+    <div class="who-section">
+      <div class="section-eyebrow">Who Is It For</div>
+      <h2 class="fade-in">Two Kinds of<br>Builders. Both Welcome.</h2>
+      <div class="who-grid fade-in">
+        <div class="who-card">
+          <h3>First-Time Shippers</h3>
+          <p>You have an idea, a half-built project, or nothing at all. The sprint is about crossing the basic milestones for the first time: pick a problem, build something, put it in front of a user, ask someone to pay for it.</p>
+        </div>
+        <div class="who-card">
+          <h3>Builders Getting Unstuck</h3>
+          <p>You already have something in progress — a product with some users, or a project that hasn't broken through. The sprint is about finding revenue, growing an audience, and building momentum.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT YOU GET (white bg) ──────────────────────── -->
+  <section class="what-you-get-section">
+    <div class="section-eyebrow" style="color: var(--accent);">What You Get</div>
+    <h2 class="wyg-title fade-in">Real Returns<br>for Real Work</h2>
+    <div class="perks-grid fade-in">
+      <div class="perk-item perk-light">
+        <div class="perk-title perk-title-dark">Real Progress</div>
+        <div class="perk-desc perk-desc-dark">Two weeks of dedicated focus inside a structure that forces shipping.</div>
+      </div>
+      <div class="perk-item perk-light">
+        <div class="perk-title perk-title-dark">Mentor Access</div>
+        <div class="perk-desc perk-desc-dark">Jerry Jiang, Jesse Rodgers, Akatos founders, and Builders Club members.</div>
+      </div>
+      <div class="perk-item perk-light">
+        <div class="perk-title perk-title-dark">Visibility</div>
+        <div class="perk-desc perk-desc-dark">Sponsors and investors at Demo Day. Strong demos lead to real conversations.</div>
+      </div>
+      <div class="perk-item perk-light">
+        <div class="perk-title perk-title-dark">$100 Back</div>
+        <div class="perk-desc perk-desc-dark">Your deposit is fully refunded if you ship and demo. No excuses not to build.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PHOTO CAROUSEL ──────────────────────────────────── -->
+  <section class="carousel-section">
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track">
+        <!-- Set 1 -->
+        <div class="carousel-img-wrap"><img src="uploads/42-DSC00483.jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/11-WED_9987 copy.jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/DSC01483 (1).jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/WED_9980 (1).jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/DSC00002.JPG" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/event.jpg" alt="" /></div>
+        <!-- Set 2 (duplicate for seamless loop) -->
+        <div class="carousel-img-wrap"><img src="uploads/42-DSC00483.jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/11-WED_9987 copy.jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/DSC01483 (1).jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/WED_9980 (1).jpg" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/DSC00002.JPG" alt="" /></div>
+        <div class="carousel-img-wrap"><img src="uploads/event.jpg" alt="" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FINAL CTA ──────────────────────────────────────── -->
+  <section class="final-cta">
+    <h2 fade-in>Ready to<br>Build?</h2>
+    <a href="https://forms.gle/npCidhMsouzYkc529" target="_blank" class="hero-cta" style="border-radius: 15px">Apply Now</a>
+    <span class="deposit-note">Deposit fully refunded if you ship and demo on May 23</span>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-brand">Akatos Arena</div>
+    <div class="footer-info">May 11–23, 2026 · Builders Club, Waterloo</div>
+  </footer>
+
+  <script>
+    // Scroll-triggered fade-ins
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          el.classList.add('visible');
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Stagger schedule rows with inline transition, cleared on intersect
+    document.querySelectorAll('.schedule-row').forEach((row, i) => {
+      row.style.opacity = '0';
+      row.style.transform = 'translateX(-12px)';
+      row.style.transition = `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`;
+      observer.observe(row);
+    });
+
+    // ── Carousel: JS-driven rAF scroll, no jump on hover ──
+    (function() {
+      const track = document.querySelector('.carousel-track');
+      if (!track) return;
+
+      let pos = 0;
+      let hovered = false;
+      const BASE_SPEED = 0.5;   // px per frame at 60fps
+      const HOVER_SPEED = 0.6;  // 20% faster
+
+      const section = document.querySelector('.carousel-section');
+      section.addEventListener('mouseenter', () => hovered = true);
+      section.addEventListener('mouseleave', () => hovered = false);
+
+      function getHalfWidth() {
+        return track.scrollWidth / 2;
+      }
+
+      function tick() {
+        const speed = hovered ? HOVER_SPEED : BASE_SPEED;
+        pos += speed;
+        const half = getHalfWidth();
+        if (pos >= half) pos -= half;
+        track.style.transform = `translateX(${-pos}px)`;
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+
+</body>
+</html>

@@ -6,6 +6,7 @@
   <title>Akatos Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.cdnfonts.com/css/amarillo" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
 
   <style>
@@ -103,9 +104,13 @@
     }
 
     .hero-logo {
-      width: clamp(50px, 6vw, 90px);
-      height: auto;
-      display: block;
+      font-family: 'Amarillo', sans-serif;
+      font-size: clamp(52px, 7vw, 96px);
+      color: #fff;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
     }
 
     .hero-sub {
@@ -575,7 +580,7 @@
       .hero-image-container { height: 75vh; border-radius: 12px 12px 0 0; }
       .hero-content { gap: 12px; padding: 32px 20px; }
       .hero-label { font-size: 11px; letter-spacing: 0.12em; }
-      .hero-logo { width: clamp(140px, 50vw, 320px); }
+      .hero-logo { font-size: clamp(40px, 10vw, 72px); }
       .hero-sub { font-size: 15px; }
       .hero-cta { font-size: 15px; padding: 13px 36px; }
 
@@ -636,7 +641,7 @@
           <img src="project/uploads/Screenshot 2026-05-02 at 10.51.33 AM.png" alt="Akatos Arena stadium" />
           <div class="hero-content">
             <p class="hero-label">Builders Club · May 11–23, 2026</p>
-            <img src="project/uploads/AkatosArena.png" alt="Akatos Arena" class="hero-logo" />
+            <div class="hero-logo">Akatos Arena</div>
             <p class="hero-sub">2 Week Builder Bootcamp</p>
             <a href="https://forms.gle/npCidhMsouzYkc529" target="_blank" class="hero-cta">Apply</a>
           </div>
